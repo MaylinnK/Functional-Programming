@@ -1,7 +1,7 @@
 function loopEdit(old_key, new_key, eyecolours) {
   old_key = "Wat is je oogkleur?";
   new_key = "eyecolour";
-  eyecolours = [];
+  eyecolours = ['gsdf', 'test', 'waarom werkt dit niet'];
 
   fetch("./dataset.json")
     .then((response) => response.json())
@@ -22,7 +22,7 @@ function loopEdit(old_key, new_key, eyecolours) {
     }
   });
 
-  // console.log(eyecolours);
-  document.getElementById('test').innerHTML = eyecolours + "hey";
+  console.log(eyecolours);
+  document.getElementById('test').innerHTML = eyecolours;
 }
 loopEdit();
