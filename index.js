@@ -1,28 +1,55 @@
-function loopEdit(old_key, new_key, eyecolours) {
-  old_key = "Wat is je oogkleur?";
-  new_key = "eyecolour";
-  eyecolours = ['gsdf', 'test', 'waarom werkt dit niet'];
-
+function getData() {
+  // Fetch dataset
   fetch("./dataset.json")
-    .then((response) => response.json())
-    .then (function (data)
-  {
-    for (let i = 0; i < data.length; i++) {
-      if (old_key !== new_key) {
-        Object.defineProperty(
-          data[i],
-          new_key,
-          Object.getOwnPropertyDescriptor(data[i], old_key)
-        );
-        delete data[i][old_key];
-      }
-    }
-    for (let i = 0; i < data.length; i++) {
-      eyecolours.push(data[i].eyecolour.replace(/\s/g, "").toLowerCase());
-    }
-  });
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      editKeys("Wat is je oogkleur?", "eyecolour", data),
+      cleanData([], data);
+    });
 
-  console.log(eyecolours);
-  document.getElementById('test').innerHTML = eyecolours;
 }
-loopEdit();
+
+getData();
+
+function editKeys(old_key, new_key, data) {
+  // Add new key with old key's value, remove old key
+  data.map(function (submit) {
+    if (old_key !== new_key) {
+      Object.defineProperty(
+        submit,
+        new_key,
+        Object.getOwnPropertyDescriptor(submit, old_key)
+      );
+      delete submit[old_key];
+    }
+    return data;
+  });
+}
+
+function cleanData(eyecolours, data) {
+  // Removes whitespace and capitalization
+  data.map(function (submit) {
+    eyecolours.push(submit.eyecolour.replace(/\s/g, "").toLowerCase());
+    document.getElementById("test").innerHTML = eyecolours;
+  });
+  return eyecolours;
+}
+
+
+// function filter() {
+//   filterValue = document.forms["filterForm"]["colour"].value;
+//   console.log(filterValue)
+//   if (filterValue == "") {
+//     console.log("Hey");
+//   } else {
+//     console.log("Ho");
+//     cleanData.filter(function () {
+//       return eyecolours == filterValue;
+//     });
+//     console.log(filter);
+//   }
+// }
+
+// document.querySelector("input").addEventListener("click", filter);
