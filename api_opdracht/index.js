@@ -5,25 +5,68 @@ function getData() {
       return response.json();
     })
     .then((data) => {
-      getUrls([], [], data.results); // Pushes berry URL's into an array
-      getBerryData([]); // Loops through arrays and extracts data from them
+      getUrls([], [], data.results);
     });
 }
 
 getData();
 
 function getUrls(berries, urls, data) {
+  // Haalt alle berries op bij nummer.
   berries = Object.keys(data);
-  //   console.log(berries)
+  // Haalt per berry de url naar detail pagina op.
   berries.map(function (berry) {
     urls.push(data[berry].url);
   });
-  return urls
+  // Geeft urls mee aan getBerryData en roept hem aan.
+  getBerryData(urls);
 }
 
+// Loopt door de detail pagina urls en haalt de data per url op.
 function getBerryData(urls) {
-  setTimeout(function () {
-    urls = getUrls;
-    console.log(urls)
-  }, 2000);
+  urls.map(function (url) {
+    fetch(url)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        // Haalt de name en firmness op uit de urls.
+        let berryData = {
+          id: url,
+          name: data.name,
+          firmness: data.firmness.name,
+        };
+        const flavors = data.flavors;
+        // Loopt door de verschillende flavors en pakt de flavor met de hoogste potency eruit.
+        for (let i = 0; i < flavors.length; i++) {
+          const potency = Math.max(
+            flavors[0].potency,
+            flavors[1].potency,
+            flavors[2].potency,
+            flavors[3].potency,
+            flavors[4].potency
+          );
+          // Neemt de hoogste potency en voegt de bijpassende flavour aan de array toe.
+          if (potency == flavors[i].potency) {
+            berryData.flavour = flavors[i].flavor.name;
+          }
+        }
+        console.log(berryData);
+        // showData(berryData);
+      });
+  });
 }
+
+function showData(berryData) {
+  const url = "https://pokeapi.co/api/v2/berry/";
+  for (let i = 0; i < berryData.length; i++) {
+    if (berryData.url == url + i) {
+      let newArticle = document.createElement("article");
+      let addData = document.createTextNode(berry);
+      newArticle.appendChild(addData);
+      let currentArticle = document.getElementById("test");
+      document.section.insertBefore(newArticle, currentArticle);
+    }
+  }
+}
+// https://stackoverflow.com/questions/57198332/select-a-property-from-an-array-of-objects-based-on-a-value-javascript
