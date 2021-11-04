@@ -23,6 +23,6 @@ See [the wiki](https://github.com/MaylinnK/Functional-Programming/wiki) for docu
 :clipboard: Add more detailed data per berry.
 
 ## License
-Author: Maylinn Kwakman
-License by MIT
+Author: Maylinn Kwakman  
+License by MIT  
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)  
