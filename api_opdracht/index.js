@@ -75,3 +75,4 @@ function showData(berryData) {
     document.querySelector("section").insertBefore(newArticle, currentArticle);
   });
 }
+ // Bron: https://www.w3schools.com/jsref/met_node_insertbefore.asp
