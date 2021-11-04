@@ -24,6 +24,7 @@ function getUrls(berries, urls, data) {
 
 // Loopt door de detail pagina urls en haalt de data per url op.
 function getBerryData(urls) {
+  let berryData = [];
   urls.map(function (url) {
     fetch(url)
       .then((response) => {
@@ -31,7 +32,7 @@ function getBerryData(urls) {
       })
       .then((data) => {
         // Haalt de name en firmness op uit de urls.
-        let berryData = {
+        let berryDataLoop = {
           id: url,
           name: data.name,
           firmness: data.firmness.name,
@@ -48,25 +49,38 @@ function getBerryData(urls) {
           );
           // Neemt de hoogste potency en voegt de bijpassende flavour aan de array toe.
           if (potency == flavors[i].potency) {
-            berryData.flavour = flavors[i].flavor.name;
+            berryDataLoop.flavour = flavors[i].flavor.name;
           }
         }
-        console.log(berryData);
-        // showData(berryData);
+        // Pusht de data in een array om mee te geven aan volgende functie
+        berryData.push(berryDataLoop);
       });
   });
+  showData(berryData);
 }
 
+
+
+// IGNORRREEEE (werkt niet)
 function showData(berryData) {
   const url = "https://pokeapi.co/api/v2/berry/";
-  for (let i = 0; i < berryData.length; i++) {
-    if (berryData.url == url + i) {
-      let newArticle = document.createElement("article");
-      let addData = document.createTextNode(berry);
-      newArticle.appendChild(addData);
-      let currentArticle = document.getElementById("test");
-      document.section.insertBefore(newArticle, currentArticle);
-    }
-  }
+  berryData.push({
+    name: "blueberry",
+    cheese: "yes",
+  });
+  console.log(berryData);
+  console.log(berryData.length)
+  // for (let i = 0; i < berryData.length; i++) {
+  //   console.log(berry.name)
+  // };
+  // berryData.map(function (berry) {
+  //   console.log(berryData)
+  //   let newArticle = document.createElement("article");
+  //   let addData = document.createTextNode(berry);
+  //   newArticle.appendChild(addData);
+  //   let currentArticle = document.getElementById("test");
+  //   document.section.insertBefore(newArticle, currentArticle);
+  //   console.log("done");
+  // });
 }
 // https://stackoverflow.com/questions/57198332/select-a-property-from-an-array-of-objects-based-on-a-value-javascript
