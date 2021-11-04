@@ -26,62 +26,52 @@ function getUrls(berries, urls, data) {
 function getBerryData(urls) {
   let berryData = [];
   urls.map(function (url) {
-    fetch(url)
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        // Haalt de name en firmness op uit de urls.
-        let berryDataLoop = {
-          id: url,
-          name: data.name,
-          firmness: data.firmness.name,
-        };
-        const flavors = data.flavors;
-        // Loopt door de verschillende flavors en pakt de flavor met de hoogste potency eruit.
-        for (let i = 0; i < flavors.length; i++) {
-          const potency = Math.max(
-            flavors[0].potency,
-            flavors[1].potency,
-            flavors[2].potency,
-            flavors[3].potency,
-            flavors[4].potency
-          );
-          // Neemt de hoogste potency en voegt de bijpassende flavour aan de array toe.
-          if (potency == flavors[i].potency) {
-            berryDataLoop.flavour = flavors[i].flavor.name;
+    berryData.push(
+      fetch(url)
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          // Haalt de name en firmness op uit de urls.
+          let berryDataLoop = {
+            name: data.name,
+            firmness: data.firmness.name,
+          };
+          const flavors = data.flavors;
+          // Loopt door de verschillende flavors en pakt de flavor met de hoogste potency eruit.
+          for (let i = 0; i < flavors.length; i++) {
+            const potency = Math.max(
+              flavors[0].potency,
+              flavors[1].potency,
+              flavors[2].potency,
+              flavors[3].potency,
+              flavors[4].potency
+            );
+            // Neemt de hoogste potency en voegt de bijpassende flavour aan de array toe.
+            if (potency == flavors[i].potency) {
+              berryDataLoop.flavour = flavors[i].flavor.name;
+            }
           }
-        }
-        // Pusht de data in een array om mee te geven aan volgende functie
-        berryData.push(berryDataLoop);
-      });
+          // Geeft de berryDataLoop mee
+          return berryDataLoop;
+        })
+    );
   });
-  showData(berryData);
+  // Wacht tot de fetch resultaten in de array zijn gepushed en geeft vervolgens berryData mee aan showData()
+  Promise.all(berryData).then((data) => {
+    showData(data);
+  });
 }
 
-
-
-// IGNORRREEEE (werkt niet)
+// Loopt door alle berries, maakt per berry een nieuwe article aan met de data en insert deze in het section-element.
 function showData(berryData) {
-  const url = "https://pokeapi.co/api/v2/berry/";
-  berryData.push({
-    name: "blueberry",
-    cheese: "yes",
+  berryData.map((berry) => {
+    let newArticle = document.createElement("article");
+    let addData = document.createTextNode(
+      berry.name + "\n" + berry.firmness + "\n" + berry.flavour
+    );
+    newArticle.appendChild(addData);
+    let currentArticle = document.getElementById("test");
+    document.querySelector("section").insertBefore(newArticle, currentArticle);
   });
-  console.log(berryData);
-  console.log(berryData.length)
 }
-// https://stackoverflow.com/questions/57198332/select-a-property-from-an-array-of-objects-based-on-a-value-javascript
-
-// for (let i = 0; i < berryData.length; i++) {
-  //   console.log(berry.name)
-  // };
-  // berryData.map(function (berry) {
-  //   console.log(berryData)
-  //   let newArticle = document.createElement("article");
-  //   let addData = document.createTextNode(berry);
-  //   newArticle.appendChild(addData);
-  //   let currentArticle = document.getElementById("test");
-  //   document.section.insertBefore(newArticle, currentArticle);
-  //   console.log("done");
-  // });
