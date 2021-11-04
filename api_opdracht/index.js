@@ -70,7 +70,10 @@ function showData(berryData) {
   });
   console.log(berryData);
   console.log(berryData.length)
-  // for (let i = 0; i < berryData.length; i++) {
+}
+// https://stackoverflow.com/questions/57198332/select-a-property-from-an-array-of-objects-based-on-a-value-javascript
+
+// for (let i = 0; i < berryData.length; i++) {
   //   console.log(berry.name)
   // };
   // berryData.map(function (berry) {
@@ -82,5 +85,3 @@ function showData(berryData) {
   //   document.section.insertBefore(newArticle, currentArticle);
   //   console.log("done");
   // });
-}
-// https://stackoverflow.com/questions/57198332/select-a-property-from-an-array-of-objects-based-on-a-value-javascript
